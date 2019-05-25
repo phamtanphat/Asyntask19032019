@@ -5,17 +5,35 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    Button btnDownload;
+    ProgressBar progressBar;
+    TextView txtprogress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // outer class
-        // inner class
+        btnDownload = findViewById(R.id.buttonDownload);
+        progressBar = findViewById(R.id.progressbar);
+        txtprogress = findViewById(R.id.textviewProgress);
+
+        txtprogress.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
+
+        btnDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         // Xử lý down load
         // 1 : Khi click vào button download
@@ -28,35 +46,41 @@ public class MainActivity extends AppCompatActivity {
 //                +Thông báo down load đã xong
 //
 
-        //anonymous class
-        new Xulydongbo().execute();
 
     }
     //Param : Tham số truyền vào cho phần xử lý logic(trong doInbackGround)
     //Progress : Tham số truyền vào cho phần cập nhật dữ liệu khi xử lý logic(onpressupdate)
     // Result : Tham số return của doInbackground gửi cho onPostexcute()
-     class  Xulydongbo extends AsyncTask<String,String,String> {
+     class  Xulydownload extends AsyncTask<Void,Integer,String> {
 
         @Override
         protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            txtprogress.setVisibility(View.VISIBLE);
             super.onPreExecute();
         }
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected String doInBackground(Void... voids) {
+            int a = 0;
+            for (int i = 0 ; i<10 ; i++){
+                a+= 10;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                publishProgress(a);
+            }
             return null;
         }
 
         @Override
-        protected void onProgressUpdate(String... values) {
+        protected void onProgressUpdate(Integer... values) {
+            int progress = values[0];
+            progressBar.setProgress(progressBar.getProgress() + progress);
             super.onProgressUpdate(values);
         }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
-
     }
 
 }
