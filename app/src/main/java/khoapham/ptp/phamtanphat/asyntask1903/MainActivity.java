@@ -72,14 +72,22 @@ public class MainActivity extends AppCompatActivity {
                 }
                 publishProgress(a);
             }
-            return null;
+            return "Download kết thúc";
         }
 
         @Override
         protected void onProgressUpdate(Integer... values) {
             int progress = values[0];
-            progressBar.setProgress(progressBar.getProgress() + progress);
+            int currentprogress = progressBar.getProgress() + progress;
+            progressBar.setProgress(currentprogress);
+            txtprogress.setText(currentprogress + " %");
             super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
+            super.onPostExecute(s);
         }
     }
 
